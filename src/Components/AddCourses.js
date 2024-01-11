@@ -79,7 +79,7 @@ export default function AddCourses({categories,onSave}) {
     //   countLesson += items.lessons.length
 
     // });
-
+    console.log(chapters);
     console.log(lessons);
 
     // console.log(categories);
@@ -103,7 +103,8 @@ export default function AddCourses({categories,onSave}) {
       summarize:course.summarize,
       category:categoryName,
       totalChapters:chapters,
-      totalLessons:lessonCount
+      totalLessons:lessonCount,
+      category_id:parseInt(course.category_id)
     }
 
     console.log(newCourse);

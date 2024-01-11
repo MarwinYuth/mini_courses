@@ -1,13 +1,13 @@
 import React from 'react'
 
-export default function CourseTable({data}) {
+export default function CourseTable({data,onDelete}) {
 
- 
+    
   return (
 
     <div className="relative overflow-x-auto mt-32">
 
-            <h1 className='text-white font-bold mb-3 text-[20px]'>Category Management</h1>
+            <h1 className='text-white font-bold mb-3 text-[20px]'>Courses Management</h1>
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
@@ -28,6 +28,9 @@ export default function CourseTable({data}) {
                         </th>
                         <th scope="col" className="px-6 py-3">
                             Total Lessons
+                        </th>
+                        <th scope="col" className="px-6 py-3">
+                            Actions
                         </th>
                     </tr>
                 </thead>
@@ -57,10 +60,11 @@ export default function CourseTable({data}) {
                                     <td className="px-6 py-4">
                                         {course.totalLessons}
                                     </td>
+                                    <td className="px-6 py-4">
+                                        <span className='text-blue-500 font-bold'>Edit</span> / <span onClick={() => onDelete(course.id)} className='text-red-500 font-bold'>Delete</span>
+                                    </td>
                                 </tr>
-
                             )
-
                         })
                    }
 

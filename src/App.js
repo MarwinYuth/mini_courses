@@ -38,7 +38,13 @@ function App() {
 
   const onDeleteCategory = (cateogoryId) => {
     setCategory(prev => prev.filter(cate => cate.id !== cateogoryId))
+    setCourses(prev => prev.filter(course => course.category_id !== cateogoryId))
 
+  }
+
+  const onDeleteCourses = (courseId) => {
+    setCourses(courses.filter(cours => cours.id !== courseId))
+    // console.log(courses);
   }
 
   return (
@@ -46,7 +52,7 @@ function App() {
     <div className="App w-[1200px] m-auto mt-14">
     
       <CategoryTables data={category} onSave={onSaveCategory} onDelete={onDeleteCategory}/>
-      <CourseTable data={courses}/>
+      <CourseTable data={courses} onDelete={onDeleteCourses}/>
 
       <AddCourses categories={category} onSave={onSaveCourse}/>
 
