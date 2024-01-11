@@ -1,24 +1,59 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
+import CategoryTables from './Components/CategoryTables';
+import CourseTable from './Components/CourseTable';
+import AddCourses from './Components/AddCourses';
 
 function App() {
+
+  const [category,setCategory] = useState([])
+  const [courses,setCourses] = useState([])
+
+  const onSaveCategory = (param) => {
+
+    setCategory(prev => {
+
+      prev.push({
+        id:category.length + 1,
+        ...param
+      })
+
+      return prev
+    })
+  }
+
+  const onSaveCourse = (param) => {
+
+    setCourses(prev => {
+
+      prev.push({
+        id:courses.length + 1,
+        ...param
+      })
+
+      return [...prev]
+    })
+
+  }
+
+  const onDeleteCategory = (cateogoryId) => {
+    setCategory(prev => prev.filter(cate => cate.id !== cateogoryId))
+
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+    <div className="App w-[1200px] m-auto mt-14">
+    
+      <CategoryTables data={category} onSave={onSaveCategory} onDelete={onDeleteCategory}/>
+      <CourseTable data={courses}/>
+
+      <AddCourses categories={category} onSave={onSaveCourse}/>
+
+
+    <div className='h-[50px]'></div>
     </div>
+
   );
 }
 
