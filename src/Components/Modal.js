@@ -1,10 +1,10 @@
 import { Input } from './Input'
 
-export default function Modal({data,onChangePopUp,isVisible,onChange}) {
+export default function Modal({data,onChangePopUp,isVisible}) {
 
   if(!isVisible){
     return null
-  }  
+  }
 
   return (
         
@@ -14,7 +14,7 @@ export default function Modal({data,onChangePopUp,isVisible,onChange}) {
             
             <h1 className="text-white font-bold text-[30px]">Modify</h1>
 
-            <Input name='name' value={data.name} Placeholder='Category Name' onChange={onChange}/>
+            <Input value={data.name} Placeholder='Category Name'/>
 
             <button>Save</button>
         </div>

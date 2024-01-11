@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Input } from './Input'
 
-export default function CategoryTables({data,onSave,onDelete}) {
+export default function CategoryTables({data,onSave,onDelete,onEdit}) {
 
   const [form,setForm] = useState({name:'',code:''})  
 
@@ -69,7 +69,7 @@ export default function CategoryTables({data,onSave,onDelete}) {
                                     {cate.code}
                                 </td>
                                 <td className="px-6 py-4">
-                                    <span className='text-blue-500 font-bold'>Edit</span> / <span onClick={() => onDelete(cate.id)} className='text-red-500 font-bold'>Delete</span>
+                                    <span onClick={() => onEdit(cate.id)} className='text-blue-500 font-bold'>Edit</span> / <span onClick={() => onDelete(cate.id)} className='text-red-500 font-bold'>Delete</span>
                                 </td>
                             </tr>
                         )

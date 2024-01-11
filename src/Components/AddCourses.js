@@ -160,7 +160,7 @@ export default function AddCourses({categories,onSave}) {
                         </div>
 
                         <Input label='Lesson' name='name' value={lesson.name} Placeholder='Lesson' onChange={(e) => onChangeLesson(e,chapterIndex,lessonIndex)}/>\
-                        <Input label='Content' name='content' value={lesson.content} Placeholder='Lesson' onChange={(e) => onChangeLesson(e,chapterIndex,lessonIndex)}/>\
+                        <Input label='Content' name='content' value={lesson.content} Placeholder='Content' onChange={(e) => onChangeLesson(e,chapterIndex,lessonIndex)}/>\
 
                       </div>
 

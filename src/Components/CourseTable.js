@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function CourseTable({data,onDelete}) {
+export default function CourseTable({data,onDelete,onEdit}) {
 
     
   return (
@@ -61,7 +61,7 @@ export default function CourseTable({data,onDelete}) {
                                         {course.totalLessons}
                                     </td>
                                     <td className="px-6 py-4">
-                                        <span className='text-blue-500 font-bold'>Edit</span> / <span onClick={() => onDelete(course.id)} className='text-red-500 font-bold'>Delete</span>
+                                        <span onClick={() => onEdit(course.id)} className='text-blue-500 font-bold'>Edit</span> / <span onClick={() => onDelete(course.id)} className='text-red-500 font-bold'>Delete</span>
                                     </td>
                                 </tr>
                             )
