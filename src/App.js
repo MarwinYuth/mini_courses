@@ -3,7 +3,7 @@ import './App.css';
 import CategoryTables from './Components/CategoryTables';
 import CourseTable from './Components/CourseTable';
 import AddCourses from './Components/AddCourses';
-import Modal from './Components/Modal';
+import Modal, { CategoryModal } from './Components/Modal';
 
 function App() {
 
@@ -73,9 +73,10 @@ function App() {
 
       <AddCourses categories={category} onSave={onSaveCourse}/>
 
-      <Modal data={viewEdit} onChangePopUp={setPopUp} isVisible={popUp}/>  
+      {popUp && <CategoryModal data={viewEdit} onChangePopUp={setPopUp}/>}
 
-    <div className='h-[50px]'></div>
+      <div className='h-[50px]'></div>
+      
     </div>
 
   );
