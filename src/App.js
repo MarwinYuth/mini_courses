@@ -75,6 +75,11 @@ function App() {
     
   }
 
+  const onUpdateCourse = (param) => {
+    console.log(courses.find(course => parseInt(course.id) === param));
+    
+  }
+
   return (
 
     <div className="App w-[1200px] m-auto mt-14">
@@ -87,7 +92,7 @@ function App() {
 
       {popUp === 'category' && <CategoryModal data={viewEdit} onChangePopUp={setPopUp} onUpdate={onUpdateCategory}/>}
 
-      {popUp === 'course' && <CourseModal data={isCourseEdit} onChangePopUp={setPopUp}/>}
+      {popUp === 'course' && <CourseModal data={isCourseEdit} onChangePopUp={setPopUp} categories={category} onUpdate={onUpdateCourse}/>}
 
       <div className='h-[50px]'></div>
 
