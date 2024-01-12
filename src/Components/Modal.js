@@ -1,39 +1,7 @@
 import { useState } from 'react'
 import { Input } from './Input'
 
-export default function Modal({data,onChangePopUp,isVisible}) {
-
-
-  const [form,setForm] = useState({name:data.name})
-
-  if(!isVisible){
-    return null
-  }
-
-  const protectModal = (e) => {
-    e.stopPropagation()
-
-  }
-
-  return (
-        
-    <div onClick={() => onChangePopUp(false)} className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
-
-        <div onClick={protectModal} className="bg-gray-600 p-8 text-center rounded-lg">
-            
-            <h1 className="text-white font-bold text-[30px]">Modify</h1>
-
-            <Input label='name' name='name' value={form.name} Placeholder='Category Name' />
-
-            <button>Save</button>
-        </div>
-
-    </div>
-
-  )
-}
-
-export const CategoryModal = ({data,onChangePopUp}) => {
+export const CategoryModal = ({data,onChangePopUp,onUpdate}) => {
 
   const [form,setForm] = useState({name:data.name,code:data.code})
 
@@ -49,7 +17,13 @@ export const CategoryModal = ({data,onChangePopUp}) => {
 
   }
 
-  console.log(data);
+  const onClickUpdate = () => {
+    data.name = form.name
+    data.code = form.code
+
+    onUpdate(data.id,form.name)
+    onChangePopUp(false)
+  }
 
   return(
 
@@ -60,8 +34,9 @@ export const CategoryModal = ({data,onChangePopUp}) => {
             <h1 className="text-white font-bold text-[30px]">Category Modify</h1>
 
             <Input label='Name' name='name' value={form.name} Placeholder='Category Name' onChange={onChange}/>
+            <Input label='Code' name='code' value={form.code} Placeholder='Code' onChange={onChange}/>
 
-            <button>Save</button>
+            <button onClick={onClickUpdate} className='p-2  font-bold rounded-lg bg-white'>Update</button>
 
         </div>
 

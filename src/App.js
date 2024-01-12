@@ -3,7 +3,7 @@ import './App.css';
 import CategoryTables from './Components/CategoryTables';
 import CourseTable from './Components/CourseTable';
 import AddCourses from './Components/AddCourses';
-import Modal, { CategoryModal } from './Components/Modal';
+import { CategoryModal } from './Components/Modal';
 
 function App() {
 
@@ -48,7 +48,7 @@ function App() {
 
   const onDeleteCourses = (courseId) => {
     setCourses(courses.filter(cours => cours.id !== courseId))
-    // console.log(courses);
+
   }
 
   const onEditCategory = (category_id) => {
@@ -64,19 +64,29 @@ function App() {
     setViewEdit(course)
   }
 
+  const onUpdateCategory = (category_id,name) => {
+    const course = courses.filter(cate => cate.category_id === category_id)
+
+    course.forEach(item => {
+      item.category = name
+    });
+    
+  }
+
   return (
 
     <div className="App w-[1200px] m-auto mt-14">
     
       <CategoryTables data={category} onSave={onSaveCategory} onDelete={onDeleteCategory} onEdit={onEditCategory}/>
+      
       <CourseTable data={courses} onDelete={onDeleteCourses} onEdit={onEditCourse}/>
 
       <AddCourses categories={category} onSave={onSaveCourse}/>
 
-      {popUp && <CategoryModal data={viewEdit} onChangePopUp={setPopUp}/>}
+      {popUp && <CategoryModal data={viewEdit} onChangePopUp={setPopUp} onUpdate={onUpdateCategory}/>}
 
       <div className='h-[50px]'></div>
-      
+
     </div>
 
   );

@@ -1,5 +1,5 @@
 import React from 'react'
-import AddCourses from './AddCourses'
+// import AddCourses from './AddCourses'
 
 export default function CourseTable({data,onDelete,onEdit}) {
 
