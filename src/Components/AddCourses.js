@@ -67,17 +67,6 @@ export default function AddCourses({categories,onSave}) {
   }
 
   const onTest = () => {
-
-    // const testarray = [...chapters]
-    // console.log(testarray[0]);
-
-    // console.log(chapters);
-
-    // let countLesson = 0
-    // lessons.forEach(items => {
-
-    //   countLesson += items.lessons.length
-
     // });
     console.log(chapters);
     console.log(lessons);
@@ -93,9 +82,7 @@ export default function AddCourses({categories,onSave}) {
     let lessonCount = 0
 
     lessons.forEach(items => {
-
-      lessonCount += items.lessons.length
-      
+      lessonCount += items.lessons.length  
     });
 
     const newCourse = {
@@ -107,11 +94,11 @@ export default function AddCourses({categories,onSave}) {
       category_id:parseInt(course.category_id)
     }
 
-    console.log(newCourse);
     onSave(newCourse)
     setChapters([])
     setLessons([])
     setCourse({category_id:'',name:'',summarize:''} )
+    
   }
   
   return (

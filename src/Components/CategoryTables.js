@@ -15,6 +15,10 @@ export default function CategoryTables({data,onSave,onDelete,onEdit}) {
   const onClickSave = (e) => {
     e.preventDefault()
 
+    if(form.name === '' || form.code === ''){
+        return null
+    }
+
     onSave(form)
     setForm({name:'',code:''})
   }

@@ -16,7 +16,7 @@ export default function CourseTable({data,onDelete,onEdit}) {
                             Id
                         </th>
                         <th scope="col" className="px-6 py-3">
-                            Name
+                            Course Name
                         </th>
                         <th scope="col" className="px-6 py-3">
                             Summarize
