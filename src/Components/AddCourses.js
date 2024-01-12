@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { Input, TextArea} from './Input'
 import SelectComponent from './SelectComponent'
+import ChapterForm from './ChapterForm'
+import LessonsForm from './LessonsForm'
 
 export default function AddCourses({categories,onSave}) {
 
@@ -123,33 +125,22 @@ export default function AddCourses({categories,onSave}) {
 
                 <div key={chapter.id} className='mt-24 border-2 border-white p-14 rounded-lg'>
                   
-                  <div className='flex justify-between'>
-
-                    <h1 className='text-white text-[30px] font-bold'>Chapter</h1>
-                    <span onClick={() => onRemoveChapter(chapter.id)} className='text-white font-bold text-[20px] cursor-pointer'>X</span>
-
-                  </div>
-                  <Input label='Chapter' name='name' value={chapter.name} Placeholder='Chapter' onChange={(e) => onChangeChapter(chapterIndex,e.target.name,e.target.value)}/>
-                  <Input label='Summarize' name='summarize' value={chapter.summarize} Placeholder='Summarize' onChange={(e) => onChangeChapter(chapterIndex,e.target.name,e.target.value)}/>
-
-                  <button onClick={() => onAddLesson(chapterIndex)} className='p-2 text-xl bg-white font-bold mb-6 rounded-lg'>Add Lesson</button>
+                  <ChapterForm
+                  chapter={chapters}
+                  chapterIndex={chapterIndex}
+                  onChangeChapter={onChangeChapter}
+                  onRemoveChapter={onRemoveChapter}
+                  onAddLesson={onAddLesson}
+                  />
 
                   {
                     chapter.lessons.map((lesson,lessonIndex) => {
 
                       return(
 
-                      <div key={lesson.id} className='mt-4 border-2 border-white p-8 rounded-lg'>
-                        
-                        <div className='flex justify-between'>
-                          <h1 className='text-white font-bold text-[32px]'>Lessons</h1>
-                          
+                        <div key={lesson.id}>
+                            <LessonsForm lesson={lessons} lessonIndex={lessonIndex} chapterIndex={chapterIndex} onChangeLesson={onChangeLesson}/>
                         </div>
-
-                        <Input label='Lesson' name='name' value={lesson.name} Placeholder='Lesson' onChange={(e) => onChangeLesson(e,chapterIndex,lessonIndex)}/>\
-                        <Input label='Content' name='content' value={lesson.content} Placeholder='Content' onChange={(e) => onChangeLesson(e,chapterIndex,lessonIndex)}/>\
-
-                      </div>
 
                       )
 
