@@ -3,14 +3,16 @@ import './App.css';
 import CategoryTables from './Components/CategoryTables';
 import CourseTable from './Components/CourseTable';
 import AddCourses from './Components/AddCourses';
-import { CategoryModal } from './Components/Modal';
+import { CategoryModal, CourseModal } from './Components/Modals/Modal';
 
 function App() {
+
+  const[isCourseEdit,setIsCourseEdit] = useState()
 
   const [category,setCategory] = useState([])
   const [courses,setCourses] = useState([])
 
-  const [popUp,setPopUp] = useState(false)
+  const [popUp,setPopUp] = useState('')
   const [viewEdit,setViewEdit] = useState()
 
   const onSaveCategory = (param) => {
@@ -53,15 +55,15 @@ function App() {
 
   const onEditCategory = (category_id) => {
     const Category = category.find(cate => cate.id === category_id)
-    setPopUp(true)
+    setPopUp('category')
     setViewEdit(Category);
 
   }
 
   const onEditCourse = (courseId) => {
-    const course = courses.find(course => course.id === courseId);
-    setPopUp(true)
-    setViewEdit(course)
+    const course = courses.find(course => course.id === courseId)
+    setPopUp('course')
+    setIsCourseEdit(course)
   }
 
   const onUpdateCategory = (category_id,name) => {
@@ -79,11 +81,13 @@ function App() {
     
       <CategoryTables data={category} onSave={onSaveCategory} onDelete={onDeleteCategory} onEdit={onEditCategory}/>
       
-      <CourseTable data={courses} onDelete={onDeleteCourses} onEdit={onEditCourse}/>
+      <CourseTable data={courses} onDelete={onDeleteCourses} onEdit={onEditCourse} isCourseEdit={isCourseEdit}/>
 
       <AddCourses categories={category} onSave={onSaveCourse}/>
 
-      {popUp && <CategoryModal data={viewEdit} onChangePopUp={setPopUp} onUpdate={onUpdateCategory}/>}
+      {popUp === 'category' && <CategoryModal data={viewEdit} onChangePopUp={setPopUp} onUpdate={onUpdateCategory}/>}
+
+      {popUp === 'course' && <CourseModal data={isCourseEdit} onChangePopUp={setPopUp}/>}
 
       <div className='h-[50px]'></div>
 

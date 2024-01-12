@@ -1,7 +1,6 @@
 import React from 'react'
-// import AddCourses from './AddCourses'
 
-export default function CourseTable({data,onDelete,onEdit}) {
+export default function CourseTable({data,onDelete,onEdit,isCourseEdit}) {
 
     
   return (
@@ -71,7 +70,7 @@ export default function CourseTable({data,onDelete,onEdit}) {
 
                 </tbody>
             </table>
-
+            
             {/* <Modal isVisible={popUp} onChangePopUp={setPopUp} data={form} onChange={onChange} onSave={onClickSave}/> */} */
         </div>
 

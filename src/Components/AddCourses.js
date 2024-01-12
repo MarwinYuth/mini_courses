@@ -11,7 +11,6 @@ export default function AddCourses({categories,onSave}) {
   const [chapters,setChapters] = useState([])
   const [lessons,setLessons] = useState([]) 
 
-
   const onChangeCourse = (e) => {
 
     const field = e.target.name
@@ -69,12 +68,9 @@ export default function AddCourses({categories,onSave}) {
   }
 
   const onTest = () => {
-    // });
     console.log(chapters);
     console.log(lessons);
 
-    // console.log(categories);
-    
   }
 
   const onSaveCourse = () => {
@@ -100,7 +96,6 @@ export default function AddCourses({categories,onSave}) {
     setChapters([])
     setLessons([])
     setCourse({category_id:'',name:'',summarize:''} )
-    
   }
   
   return (
@@ -110,7 +105,6 @@ export default function AddCourses({categories,onSave}) {
         <h1 className="text-white font-bold text-[30px]">New Course</h1>
 
         <div className='w-[900px] m-auto'>
-
          
           <Input label='New Course' name='name' value={course.name} Placeholder='New Course' onChange={onChangeCourse}/>
           <SelectComponent name='category_id' value={course.category_id} options={categories} onChange={onChangeCourse}/>
@@ -138,9 +132,7 @@ export default function AddCourses({categories,onSave}) {
 
                       return(
 
-                        <div key={lesson.id}>
-                            <LessonsForm lesson={lessons} lessonIndex={lessonIndex} chapterIndex={chapterIndex} onChangeLesson={onChangeLesson}/>
-                        </div>
+                        <LessonsForm key={lesson.id} lesson={lessons} lessonIndex={lessonIndex} chapterIndex={chapterIndex} onChangeLesson={onChangeLesson}/>
 
                       )
 
