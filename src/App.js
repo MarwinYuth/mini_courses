@@ -3,7 +3,7 @@ import './App.css';
 import CategoryTables from './Components/CategoryTables';
 import CourseTable from './Components/CourseTable';
 import AddCourses from './Components/AddCourses';
-import { CategoryModal, CourseModal } from './Components/Modals/Modal';
+import { CategoryModal } from './Components/Modals/Modal';
 
 function App() {
 
@@ -14,6 +14,9 @@ function App() {
 
   const [popUp,setPopUp] = useState('')
   const [viewEdit,setViewEdit] = useState()
+
+  const [isEditCourse,setIsEditCourse] = useState()
+  const [isEdit,setIsEdit] = useState(false)
 
   const onSaveCategory = (param) => {
 
@@ -62,8 +65,24 @@ function App() {
 
   const onEditCourse = (courseId) => {
     const course = courses.find(course => course.id === courseId)
-    setPopUp('course')
-    setIsCourseEdit(course)
+    // setPopUp('course')
+    setIsEdit(true)
+    setIsEditCourse(course)
+  }
+
+  const onUpdateCourse = (course_id,param) => {
+
+    const courseIndex = courses.findIndex(course => course.id === course_id)
+    courses.splice(courseIndex,1)
+    setCourses(prev => {
+      prev.push({
+        id:course_id,
+        ...param
+      })
+      return prev
+    })
+    setIsEdit(false)
+    console.log(courses);
   }
 
   const onUpdateCategory = (category_id,name) => {
@@ -75,10 +94,12 @@ function App() {
     
   }
 
-  const onUpdateCourse = (param) => {
-    console.log(courses.find(course => parseInt(course.id) === param));
-    
-  }
+  // const onRemoveChapter = (chapter_id) => {
+  //   const chapter = courses.find(course => course.totalChapters.filter(chap => chap.id !== chapter_id))
+
+  //   // setCourses(chapter.filter(chap => chap.id !== chapter_id))
+  //   setCourses(prev => prev.find(course => course.totalChapters.filter(chap => chap.id !== chapter_id)))
+  // }
 
   return (
 
@@ -88,11 +109,11 @@ function App() {
       
       <CourseTable data={courses} onDelete={onDeleteCourses} onEdit={onEditCourse} isCourseEdit={isCourseEdit}/>
 
-      <AddCourses categories={category} onSave={onSaveCourse}/>
-
+      <AddCourses data={isEditCourse} categories={category} onSave={onSaveCourse} onEditCourse={isEdit} onUpdate={onUpdateCourse}/>
+ 
       {popUp === 'category' && <CategoryModal data={viewEdit} onChangePopUp={setPopUp} onUpdate={onUpdateCategory}/>}
 
-      {popUp === 'course' && <CourseModal data={isCourseEdit} onChangePopUp={setPopUp} categories={category} onUpdate={onUpdateCourse}/>}
+      {/* {popUp === 'course' && <CourseModal data={isCourseEdit} onChangePopUp={setPopUp} categories={category}/>} */}
 
       <div className='h-[50px]'></div>
 

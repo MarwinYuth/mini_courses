@@ -10,15 +10,13 @@ export default function ChapterForm({
 }) 
     {
 
-        
-
   return (
 
     <div>
 
         <div className='flex justify-between'>
 
-        <h1 className='text-white text-[30px] font-bold'>Chapter</h1>
+        <h1 className='text-white text-[30px] font-bold'>Chapter {chapter.id}</h1>
         <span onClick={() => onRemoveChapter(chapter.id)} className='text-white font-bold text-[20px] cursor-pointer'>X</span>
         </div>
         <Input label='Chapter' name='name' value={chapter.name} Placeholder='Chapter' onChange={(e) => onChangeChapter(chapterIndex,e.target.name,e.target.value)}/>

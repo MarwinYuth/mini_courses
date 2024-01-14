@@ -1,7 +1,7 @@
 import React from 'react'
 import { Input } from './Input'
 
-export default function LessonsForm({lesson,lessonIndex,chapterIndex,onChangeLesson}) {
+export default function LessonsForm({lesson,lessonIndex,chapterIndex,onChangeLesson,onRemove}) {
 
   return (
 
@@ -9,7 +9,7 @@ export default function LessonsForm({lesson,lessonIndex,chapterIndex,onChangeLes
                         
         <div className='flex justify-between'>
           <h1 className='text-white font-bold text-[32px]'>Lessons</h1>
-          
+          <span onClick={() => onRemove(chapterIndex,lesson.id)} className='text-white font-bold text-[20px] cursor-pointer'>X</span>
         </div>
 
         <Input label='Lesson' name='name' value={lesson.name} Placeholder='Lesson' onChange={(e) => onChangeLesson(e,chapterIndex,lessonIndex)}/>\

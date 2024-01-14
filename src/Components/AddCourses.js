@@ -1,15 +1,24 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Input, TextArea} from './Input'
 import SelectComponent from './SelectComponent'
 import ChapterForm from './ChapterForm'
 import LessonsForm from './LessonsForm'
 
-export default function AddCourses({categories,onSave}) {
+export default function AddCourses({data,categories,onSave,onEditCourse,onUpdate}) {
 
   const [course,setCourse] = useState({category_id:'',name:'',summarize:''})
 
   const [chapters,setChapters] = useState([])
   const [lessons,setLessons] = useState([]) 
+
+  useEffect(() => {
+
+    if(onEditCourse){
+
+      setCourse({category_id:data.category_id,name:data.name,summarize:data.summarize})
+      setChapters(data.totalChapters)
+    }
+  },[data,onEditCourse])
 
   const onChangeCourse = (e) => {
 
@@ -67,10 +76,21 @@ export default function AddCourses({categories,onSave}) {
     setChapters(prev => prev.filter(chap => chap.id !== chapterId))
   }
 
-  const onTest = () => {
-    console.log(chapters);
-    console.log(lessons);
+  const onRemoveLesson = (chapterIndex,lessonId) => {
+    const updateLesson = [...chapters]
+    updateLesson[chapterIndex].lessons = updateLesson[chapterIndex].lessons.filter(les => les.id !== lessonId)
+    setChapters(updateLesson)
 
+  }
+
+  const onTest = () => {
+    // const lengthcount = 0 
+    
+    // chapters.forEach(items => {
+    //   console.log(items.lessons.length);
+    // });
+
+    console.log(lengthcount);
   }
 
   const onSaveCourse = () => {
@@ -78,6 +98,31 @@ export default function AddCourses({categories,onSave}) {
     const categoryName = categories.find(cate => cate.id === parseInt(course.category_id)).name
 
     let lessonCount = 0
+
+    if(onEditCourse){
+
+      let lessonCount = 0 
+    
+      chapters.forEach(items => {
+        lessonCount += items.lessons.length
+      });
+      
+      const newCourse = {
+        name:course.name,
+        summarize:course.summarize,
+        category:categoryName,
+        totalChapters:chapters,
+        totalLessons:lessonCount,
+        category_id:parseInt(course.category_id)
+      }
+      
+      onUpdate(data.id,newCourse)
+      setChapters([])
+      setLessons([])
+      setCourse({category_id:'',name:'',summarize:''} )
+
+      return null
+    }
 
     lessons.forEach(items => {
       lessonCount += items.lessons.length  
@@ -96,6 +141,7 @@ export default function AddCourses({categories,onSave}) {
     setChapters([])
     setLessons([])
     setCourse({category_id:'',name:'',summarize:''} )
+    console.log(chapters);
   }
   
   return (
@@ -120,7 +166,7 @@ export default function AddCourses({categories,onSave}) {
                 <div key={chapter.id} className='mt-24 border-2 border-white p-14 rounded-lg'>
                   
                   <ChapterForm
-                  chapter={chapters}
+                  chapter={chapter}
                   chapterIndex={chapterIndex}
                   onChangeChapter={onChangeChapter}
                   onRemoveChapter={onRemoveChapter}
@@ -132,7 +178,7 @@ export default function AddCourses({categories,onSave}) {
 
                       return(
 
-                        <LessonsForm key={lesson.id} lesson={lessons} lessonIndex={lessonIndex} chapterIndex={chapterIndex} onChangeLesson={onChangeLesson}/>
+                        <LessonsForm key={lesson.id} lesson={lesson} lessonIndex={lessonIndex} chapterIndex={chapterIndex} onChangeLesson={onChangeLesson} onRemove={onRemoveLesson}/>
 
                       )
 
@@ -145,7 +191,7 @@ export default function AddCourses({categories,onSave}) {
             })
           }
 
-          {chapters.length > 0 && <button className='bg-white p-4 mt-3 font-bold rounded-lg' onClick={onSaveCourse}>Save</button>}
+          {chapters.length > 0 && <button className='bg-white p-4 mt-3 font-bold rounded-lg' onClick={onSaveCourse}> {onEditCourse ? 'Update' : 'Save'} </button>}
 
         </div>
 

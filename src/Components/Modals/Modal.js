@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Input } from '../Input'
 import SelectComponent from '../SelectComponent'
 import ChapterForm from '../ChapterForm'
+import LessonsForm from '../LessonsForm'
 
 export const CategoryModal = ({data,onChangePopUp,onUpdate}) => {
 
@@ -48,13 +49,28 @@ export const CategoryModal = ({data,onChangePopUp,onUpdate}) => {
 
 }
 
-export const CourseModal = ({data,onChangePopUp,categories,onUpdate}) => {
+export const CourseModal = ({data,onChangePopUp,categories,onRemove}) => {
 
   const [form,setForm] = useState({
     category_id:data.category_id,
     name:data.name,
     summarize:data.summarize
   })
+
+  const onChangeChapter = (chapterIndex,field,value) => { 
+
+    const updatedChapters = [...data.totalChapters];
+    updatedChapters[chapterIndex] = {
+      ...updatedChapters[chapterIndex],
+      [field]: value,
+    };
+
+    setForm((prevForm) => ({
+      ...prevForm,
+      totalChapters: updatedChapters,
+    }));
+
+  }
 
   const protectModal = (e) => {
     e.stopPropagation()
@@ -76,7 +92,7 @@ export const CourseModal = ({data,onChangePopUp,categories,onUpdate}) => {
     data.category = newCategory.name
     data.summarize = form.summarize
     
-    console.log(data.totalChapters);
+    onChangePopUp('')
   }
 
   return(
@@ -96,9 +112,21 @@ export const CourseModal = ({data,onChangePopUp,categories,onUpdate}) => {
 
               return(
 
-                <div className='border-2 border-white p-4 mt-4 rounded-lg'>
+                <div key={chapter.id} className='border-2 border-white p-4 mt-4 rounded-lg'>
 
-                  <ChapterForm chapter={chapter} chapterIndex={chapterIndex} onChangeChapter={onChange}/>
+                  <ChapterForm chapter={chapter} chapterIndex={chapterIndex} onChangeChapter={onChangeChapter} />
+
+                  {
+                    chapter.lessons.map((lesson,lessonIndex) => {
+
+                      return( 
+
+                        <LessonsForm key={lesson.id} lesson={lesson} lessonIndex={lessonIndex} chapterIndex={chapterIndex}/>
+
+                      )
+
+                    })
+                  }
 
                 </div>
 
