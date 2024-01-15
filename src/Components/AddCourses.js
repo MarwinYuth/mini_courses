@@ -1,104 +1,90 @@
-import { useState } from 'react'
-import { Input, TextArea} from './Input'
-import SelectComponent from './SelectComponent'
+import { useEffect, useState } from 'react'
+import { FormikInput} from './Input'
+import { FormikSelect } from './SelectComponent'
+import { Formik,Form, FieldArray } from 'formik'
 
-export default function AddCourses({categories,onSave}) {
+export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
 
-  const [course,setCourse] = useState({category_id:'',name:'',summarize:''})
-
-  const [chapters,setChapters] = useState([])
-  const [lessons,setLessons] = useState([]) 
-
-
-  const onChangeCourse = (e) => {
-
-    const field = e.target.name
-    const value = e.target.value
-
-    setCourse({...course,[field]:value})
-
-  }
-
-  const onChangeChapter = (chapterIndex,field,value) => {
-    const updateChapter = [...chapters]
-    updateChapter[chapterIndex][field] = value
-    setChapters(updateChapter)
-  }
-
-  const onAddChapter = () => {
-
-    const newChapter = {
-      id:chapters.length + 1,
+  const [initiaValues,setInitiaValues] = useState({
+    name:'',
+    category_id:'',
+    summarize:'',
+    totalChapter:[{
       name:'',
       summarize:'',
-      lessons:[]
+      lessons:[
+        {
+          name:'',
+          content:''
+        }
+      ]
+    }]
+  })
+
+  useEffect(() => {
+
+    if(isEdit){
+      setInitiaValues(data)
     }
 
-    setChapters([...chapters,newChapter])
-  }
+  },[isEdit,data])
 
-  const onChangeLesson = (e,ChapterIndex,LessonIndex) => {
-
-    const field = e.target.name
-    const value = e.target.value
-
-    const updateLesson = [...chapters]
-    updateLesson[ChapterIndex].lessons[LessonIndex][field] = value
-
-    setLessons(updateLesson)
-  }
-
-  const onAddLesson = (chapterIndex) => {
-
-    const newLesson = {
-      id:chapters[chapterIndex].lessons.length + 1,
-      name:'',
-      content:''
-    }
-
-    const updateLesson = [...chapters]
-    updateLesson[chapterIndex].lessons.push(newLesson)
-
-    setLessons([...lessons,newLesson])
-  }
-
-  const onRemoveChapter = (chapterId) => {
-    setChapters(prev => prev.filter(chap => chap.id !== chapterId))
-  }
-
-  const onTest = () => {
-    // });
-    console.log(chapters);
-    console.log(lessons);
-
-    // console.log(categories);
+  const onSaveCourse = (values,actions) => {
     
-  }
-
-  const onSaveCourse = () => {
-
-    const categoryName = categories.find(cate => cate.id === parseInt(course.category_id)).name
+    const categoryName = categories.find(cate => cate.id === parseInt(values.category_id))
 
     let lessonCount = 0
 
-    lessons.forEach(items => {
-      lessonCount += items.lessons.length  
-    });
+    if(isEdit){
 
-    const newCourse = {
-      name:course.name,
-      summarize:course.summarize,
-      category:categoryName,
-      totalChapters:chapters,
-      totalLessons:lessonCount,
-      category_id:parseInt(course.category_id)
+      values.totalChapter.forEach(items => {
+        lessonCount += items.lessons.length  
+      });
+
+      const newCourse = {
+        name:values.name,
+        summarize:values.summarize,
+        category:categoryName.name,
+        totalChapter:values.totalChapter,
+        totalLessons:lessonCount,
+        category_id:parseInt(values.category_id)
+      }
+
+      onUpdate(data.id,newCourse)
+    }else{
+
+      values.totalChapter.forEach(items => {
+        lessonCount += items.lessons.length  
+      });
+  
+      const newCourse = {
+        name:values.name,
+        summarize:values.summarize,
+        category:categoryName.name,
+        totalChapter:values.totalChapter,
+        totalLessons:lessonCount,
+        category_id:parseInt(values.category_id)
+      }
+  
+      onSave(newCourse)
     }
 
-    onSave(newCourse)
-    setChapters([])
-    setLessons([])
-    setCourse({category_id:'',name:'',summarize:''} )
-    
+    setInitiaValues({
+      name:'',
+      category_id:'',
+      summarize:'',
+      totalChapter:[{
+        name:'',
+        summarize:'',
+        lessons:[
+          {
+            name:'',
+            content:''
+          }
+        ]
+      }]
+    })
+    actions.resetForm()
   }
   
   return (
@@ -109,60 +95,90 @@ export default function AddCourses({categories,onSave}) {
 
         <div className='w-[900px] m-auto'>
 
-         
-          <Input label='New Course' name='name' value={course.name} Placeholder='New Course' onChange={onChangeCourse}/>
-          <SelectComponent name='category_id' value={course.category_id} options={categories} onChange={onChangeCourse}/>
-          <TextArea label='Summarize' placeholder='Summarize' name='summarize' value={course.summarize} onChange={onChangeCourse}/>
+        <Formik
+         initialValues={initiaValues}
+         enableReinitialize={true}
+         onSubmit={onSaveCourse}
+         >
+         {({values}) => (
+          <Form>
 
-          <button onClick={onTest} className='mt-4 rounded-lg font-bold text-lg float-end bg-white p-3 m-2'>Test Button</button>
-          <button onClick={onAddChapter} className='mt-4 rounded-lg font-bold text-lg float-end bg-white p-3 m-2'>Add Chapter</button>
-          
-          {
-            chapters.map((chapter,chapterIndex) => {
-              return(
+            <FormikInput label='Course' placeholder='Course' name='name' />
+            <FormikSelect label='Select Category' name='category_id' options={categories} />
+            <FormikInput label='Summarize' placeholder='Summarize' name='summarize' />
 
-                <div key={chapter.id} className='mt-24 border-2 border-white p-14 rounded-lg'>
-                  
-                  <div className='flex justify-between'>
+            <FieldArray name='totalChapter'>
+              {({push,remove}) => (
+                <div>
 
-                    <h1 className='text-white text-[30px] font-bold'>Chapter</h1>
-                    <span onClick={() => onRemoveChapter(chapter.id)} className='text-white font-bold text-[20px] cursor-pointer'>X</span>
+                      <button
+                        onClick={() => {
+                          push({
+                            name:'',
+                            summarize:'',
+                            lessons:[{name:'',content:''}]
+                          })
+                        }}
+                        type='button'
+                        className='bg-white float-start font-bold rounded-lg'
+                        >
+                        Add Chapter
+                      </button>
 
-                  </div>
-                  <Input label='Chapter' name='name' value={chapter.name} Placeholder='Chapter' onChange={(e) => onChangeChapter(chapterIndex,e.target.name,e.target.value)}/>
-                  <Input label='Summarize' name='summarize' value={chapter.summarize} Placeholder='Summarize' onChange={(e) => onChangeChapter(chapterIndex,e.target.name,e.target.value)}/>
+                  {values.totalChapter.map((chapter,index) => (
 
-                  <button onClick={() => onAddLesson(chapterIndex)} className='p-2 text-xl bg-white font-bold mb-6 rounded-lg'>Add Lesson</button>
+                    <div key={index} className='border border-white p-5 mt-4'>
 
-                  {
-                    chapter.lessons.map((lesson,lessonIndex) => {
+                      <span onClick={() => remove(index)} className='text-white float-end font-bold'>X</span>
+                      <FormikInput label='Chapter' placeholder='Chapter' name={`totalChapter.${index}.name`}/>
+                      <FormikInput label='Summaarize' placeholder='Summarize' name={`totalChapter.${index}.summarize`}/>
 
-                      return(
 
-                      <div key={lesson.id} className='mt-4 border-2 border-white p-8 rounded-lg'>
-                        
-                        <div className='flex justify-between'>
-                          <h1 className='text-white font-bold text-[32px]'>Lessons</h1>
+                      <FieldArray name={`totalChapter.${index}.lessons`}>
+
+                        {({push:pushLesson,remove:removeLesson}) => (
                           
-                        </div>
+                          <div className='w-[800px] mt-14 m-auto border border-white p-5'>
 
-                        <Input label='Lesson' name='name' value={lesson.name} Placeholder='Lesson' onChange={(e) => onChangeLesson(e,chapterIndex,lessonIndex)}/>\
-                        <Input label='Content' name='content' value={lesson.content} Placeholder='Content' onChange={(e) => onChangeLesson(e,chapterIndex,lessonIndex)}/>\
+                                <button
+                                onClick={() => {
+                                  pushLesson({name:'',content:''})
+                                }}
+                                type='button'
+                                className='bg-white font-bold rounded-lg'
+                                >
+                                  Add Lessons
+                                </button>
 
-                      </div>
+                            {chapter.lessons.map((lesson,lessonIndex) => (
+                              <div key={lessonIndex}>
+                                <span onClick={() => removeLesson(lessonIndex)} className='text-white float-end font-bold'>X</span>
+                                <FormikInput label='Lessons' name={`totalChapter.${index}.lessons.${lessonIndex}.name`}/>
+                                <FormikInput label='Content' name={`totalChapter.${index}.lessons.${lessonIndex}.content`}/>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </FieldArray>
 
-                      )
-
-                    })
-                  }
+                    </div>
+                    
+                  ))}
 
                 </div>
-                
-              )
-            })
-          }
+              )}
+            </FieldArray>
 
-          {chapters.length > 0 && <button className='bg-white p-4 mt-3 font-bold rounded-lg' onClick={onSaveCourse}>Save</button>}
+            <button type='submit' className='rounded-lg font-bold p-4 bg-white mt-8'>
+              {isEdit ? 'Update' : 'Save'}
+            </button>
+
+          </Form>
+         )}
+
+         </Formik>
+         
+          {/* {chapters.length > 0 && <button className='bg-white p-4 mt-3 font-bold rounded-lg' onClick={onSaveCourse}>Save</button>} */}
 
         </div>
 

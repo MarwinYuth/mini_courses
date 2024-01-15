@@ -10,6 +10,9 @@ function App() {
   const [category,setCategory] = useState([])
   const [courses,setCourses] = useState([])
 
+  const [isCourseEdit,setIsCourseEdit] = useState()
+  const [isEdit,setIsEdit] = useState(false)
+
   const [popUp,setPopUp] = useState(false)
   const [viewEdit,setViewEdit] = useState()
 
@@ -22,12 +25,11 @@ function App() {
         ...param
       })
 
-      return prev
+      return [...prev]
     })
   }
 
-  const onSaveCourse = (param) => {
-
+  const onSaveCourse = (param) => {   
     setCourses(prev => {
 
       prev.push({
@@ -37,7 +39,7 @@ function App() {
 
       return [...prev]
     })
-
+    console.log(courses);
   }
 
   const onDeleteCategory = (cateogoryId) => {
@@ -60,8 +62,9 @@ function App() {
 
   const onEditCourse = (courseId) => {
     const course = courses.find(course => course.id === courseId);
-    setPopUp(true)
-    setViewEdit(course)
+    console.log('asdf');
+    setIsCourseEdit(course)
+    setIsEdit(!isEdit)
   }
 
   const onUpdateCategory = (category_id,name) => {
@@ -73,6 +76,20 @@ function App() {
     
   }
 
+  const onUpdateCourse = (course_id,param) => {
+    const courseIndex = courses.findIndex(course => course.id === course_id)
+    courses.splice(courseIndex,1)
+
+    setCourses(prev => {
+      prev.push({
+        id:course_id,
+        ...param
+      })
+      return [...prev]
+    })
+    setIsEdit(false)
+  }
+
   return (
 
     <div className="App w-[1200px] m-auto mt-14">
@@ -81,7 +98,7 @@ function App() {
       
       <CourseTable data={courses} onDelete={onDeleteCourses} onEdit={onEditCourse}/>
 
-      <AddCourses categories={category} onSave={onSaveCourse}/>
+      <AddCourses data={isCourseEdit} categories={category} onSave={onSaveCourse} isEdit={isEdit} onUpdate={onUpdateCourse}/>
 
       {popUp && <CategoryModal data={viewEdit} onChangePopUp={setPopUp} onUpdate={onUpdateCategory}/>}
 

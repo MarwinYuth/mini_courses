@@ -1,42 +1,30 @@
-import React, { useState } from 'react'
-import { Input } from './Input'
+import React from 'react'
+import { FormikInput } from './Input'
+import { Form, Formik } from 'formik'
 
 export default function CategoryTables({data,onSave,onDelete,onEdit}) {
 
-  const [form,setForm] = useState({name:'',code:''})  
-
-  const onChange = (e) => {
-    const field = e.target.name
-    const value = e.target.value
-
-    setForm({...form,[field]:value})
-  }
-
-  const onClickSave = (e) => {
-    e.preventDefault()
-
-    if(form.name === '' || form.code === ''){
-        return null
-    }
-
-    onSave(form)
-    setForm({name:'',code:''})
+  const onSubmit = (values,actions) => {
+    onSave(values)
+    actions.resetForm()
   }
 
   return (
 
-    <div className="relative overflow-x-auto">
+    <div className="relative overflow-x-auto">  
+        
+        <Formik
+            initialValues={{name:'',code:''}}
+            onSubmit={onSubmit}
+        >
 
+            <Form>
+                <FormikInput label='Category' placeholder='category' name='name'/>
+                <FormikInput label='Code' placeholder='code' name='code'/>
 
-        <form className='w-[800px]'>
-                
-            <Input label='Category Name' name='name' Placeholder='Category Name' value={form.name} onChange={onChange}/>
-
-            <Input label='Code' name='code' Placeholder='Code' value={form.code} onChange={onChange}/>
-
-            <button onClick={onClickSave} type='submit' className='float-start bg-white p-3 rounded-lg mb-4 font-bold text-lg'>Add Category</button>
-
-        </form>
+                <button type='submit' className='bg-white p-4 font-bold rounded-lg'>Save</button>
+            </Form>
+        </Formik>
         
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mt-32">
 

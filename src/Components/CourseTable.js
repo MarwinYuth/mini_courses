@@ -3,7 +3,6 @@ import React from 'react'
 
 export default function CourseTable({data,onDelete,onEdit}) {
 
-    
   return (
 
     <div className="relative overflow-x-auto mt-32">
@@ -56,7 +55,7 @@ export default function CourseTable({data,onDelete,onEdit}) {
                                         {course.category}
                                     </td>
                                     <td className="px-6 py-4">
-                                        {course.totalChapters.length}
+                                        {course.totalChapter.length}
                                     </td>
                                     <td className="px-6 py-4">
                                         {course.totalLessons}

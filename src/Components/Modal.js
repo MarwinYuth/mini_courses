@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Input } from './Input'
+import { FormikInput, Input } from './Input'
+import { Field, Formik,Form } from 'formik'
 
 export const CategoryModal = ({data,onChangePopUp,onUpdate}) => {
 
@@ -17,11 +18,12 @@ export const CategoryModal = ({data,onChangePopUp,onUpdate}) => {
 
   }
 
-  const onClickUpdate = () => {
-    data.name = form.name
-    data.code = form.code
+  const onClickUpdate = (values) => {
 
-    onUpdate(data.id,form.name)
+    data.name = values.category
+    data.code = values.code
+
+    onUpdate(data.id,values.category)
     onChangePopUp(false)
   }
 
@@ -33,11 +35,23 @@ export const CategoryModal = ({data,onChangePopUp,onUpdate}) => {
 
             <h1 className="text-white font-bold text-[30px]">Category Modify</h1>
 
-            <Input label='Name' name='name' value={form.name} Placeholder='Category Name' onChange={onChange}/>
-            <Input label='Code' name='code' value={form.code} Placeholder='Code' onChange={onChange}/>
+            <Formik
+              initialValues={{ category: data.name, code: data.code }}
+              onSubmit={onClickUpdate}
+            >
 
-            <button onClick={onClickUpdate} className='p-2  font-bold rounded-lg bg-white'>Update</button>
+              <Form>
 
+                <FormikInput label='cateogyr' name='category'/>
+
+                <FormikInput label='Code' name='code'/>
+
+                <button className='bg-white font-bold p-4'>Click</button>
+              </Form>
+
+            </Formik>
+            {/* <Input label='Name' name='name' value={form.name} Placeholder='Category Name' onChange={onChange}/>
+            <Input label='Code' name='code' value={form.code} Placeholder='Code' onChange={onChange}/> */}
         </div>
 
     </div>
