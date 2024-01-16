@@ -1,21 +1,24 @@
 import { useEffect, useState } from 'react'
 import { FormikInput} from './Input'
-import { FormikSelect } from './SelectComponent'
 import { Formik,Form, FieldArray } from 'formik'
 import Select from 'react-select'
+import CreatableSelect from 'react-select/creatable';
 
 export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
+
+  const [selectTags,setSelectTags] = useState([])
 
   const [initiaValues,setInitiaValues] = useState({
     name:'',
     category_id:'',
     category:'',
     summarize:'',
+    tags:[],
     chapters:[{
       name:'',
       summarize:'',
       lessons:[
-        {
+        {  
           name:'',
           content:''
         }
@@ -27,6 +30,7 @@ export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
 
     if(isEdit){
       setInitiaValues(data)
+      setSelectTags(data.tags)
     }
 
   },[isEdit,data])
@@ -44,6 +48,7 @@ export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
       const newCourse = {
         name:values.name,
         summarize:values.summarize,
+        tags:selectTags,
         category:values.category,
         chapters:values.chapters,
         totalLessons:lessonCount,
@@ -60,13 +65,13 @@ export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
       const newCourse = {
         name:values.name, 
         summarize:values.summarize,
+        tags:selectTags,
         category:values.category,
         chapters:values.chapters,
         totalLessons:lessonCount,
         category_id:parseInt(values.category_id)
       }
       
-      console.log(newCourse);
       onSave(newCourse)
     }
 
@@ -74,6 +79,7 @@ export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
       name:'',
       category_id:'',
       summarize:'',
+      tags:[],
       category:'',
       chapters:[{
         name:'',
@@ -86,19 +92,10 @@ export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
         ]
       }]
     })
+    setSelectTags([])
     actions.resetForm()
   }
 
-  // const selectOption = [
-  //   {id:1,value:'blue',label:'Blue'},
-  //   {id:1,value:'red',label:'Red'},
-  //   {id:1,value:'yelloe',label:'Yellow'}
-  // ]
-
-  const handleSelect = (selectOption) => {
-    console.log(selectOption);
-  }
-  console.log(categories);
   return (
 
     <div>
@@ -118,14 +115,21 @@ export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
             <FormikInput label='Course' placeholder='Course' name='name' />
 
             <Select options={categories}
-            defaultInputValue={categories[0]}
+            defaultInputValue={'Please Select Category'}
             onChange={(selectOption) => {
-              const selectCategory = categories.find(cate => cate.value === selectOption.value)
-              values.category_id = selectCategory.id
-              values.category = selectCategory.value
+                const selectCategory = categories.find(cate => cate.value === selectOption.value)
+                values.category_id = selectCategory.id
+                values.category = selectCategory.value
             }}/>
             <br></br>
-            <Select options={categories} isMulti/>
+
+            <CreatableSelect 
+            isMulti
+            value={selectTags}
+            onChange={(selectOption) => {
+              setSelectTags(selectOption)
+            }}
+            />
 
             <FormikInput label='Summarize' placeholder='Summarize' name='summarize' />
 
@@ -142,7 +146,7 @@ export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
                           })
                         }}
                         type='button'
-                        className='bg-white float-start font-bold rounded-lg'
+                        className='bg-white p-2 mt-2 ml-2 float-start font-bold rounded-lg'
                         >
                         Add Chapter
                       </button>
@@ -167,7 +171,7 @@ export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
                                   pushLesson({name:'',content:''})
                                 }}
                                 type='button'
-                                className='bg-white font-bold rounded-lg'
+                                className='bg-white p-2 font-bold rounded-lg'
                                 >
                                   Add Lessons
                                 </button>

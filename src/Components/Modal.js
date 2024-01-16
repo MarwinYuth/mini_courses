@@ -1,17 +1,16 @@
-import { useState } from 'react'
-import { FormikInput, Input } from './Input'
-import { Field, Formik,Form } from 'formik'
+import { FormikInput } from './Input'
+import { Formik,Form } from 'formik'
 
 export const CategoryModal = ({data,onChangePopUp,onUpdate}) => {
 
-  const [form,setForm] = useState({name:data.name,code:data.code})
+  // const [form,setForm] = useState({name:data.name,code:data.code})
 
-  const onChange = (e) => {
-    const field = e.target.name
-    const value = e.target.value
+  // const onChange = (e) => {
+  //   const field = e.target.name
+  //   const value = e.target.value
 
-    setForm({...form,[field]:value})
-  }
+  //   setForm({...form,[field]:value})
+  // }
 
   const protectModal = (e) => {
     e.stopPropagation()

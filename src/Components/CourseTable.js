@@ -24,6 +24,9 @@ export default function CourseTable({data,onDelete,onEdit}) {
                             Category
                         </th>
                         <th scope="col" className="px-6 py-3">
+                            Tags
+                        </th>
+                        <th scope="col" className="px-6 py-3">
                             Total Chapters
                         </th>
                         <th scope="col" className="px-6 py-3">
@@ -53,6 +56,9 @@ export default function CourseTable({data,onDelete,onEdit}) {
                                     </td>
                                     <td className="px-6 py-4">
                                         {course.category}
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        {course.tags.length}
                                     </td>
                                     <td className="px-6 py-4">
                                         {course.chapters.length}

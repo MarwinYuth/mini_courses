@@ -91,6 +91,8 @@ function App() {
     setIsEdit(false)
   }
 
+  console.log(courses);
+
   return (
 
     <div className="App w-[1200px] m-auto mt-14">
