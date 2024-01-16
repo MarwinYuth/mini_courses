@@ -2,12 +2,14 @@ import { useEffect, useState } from 'react'
 import { FormikInput} from './Input'
 import { FormikSelect } from './SelectComponent'
 import { Formik,Form, FieldArray } from 'formik'
+import Select from 'react-select'
 
 export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
 
   const [initiaValues,setInitiaValues] = useState({
     name:'',
     category_id:'',
+    category:'',
     summarize:'',
     chapters:[{
       name:'',
@@ -30,8 +32,6 @@ export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
   },[isEdit,data])
 
   const onSaveCourse = (values,actions) => {
-    
-    const categoryName = categories.find(cate => cate.id === parseInt(values.category_id))
 
     let lessonCount = 0
 
@@ -44,7 +44,7 @@ export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
       const newCourse = {
         name:values.name,
         summarize:values.summarize,
-        category:categoryName.name,
+        category:values.category,
         chapters:values.chapters,
         totalLessons:lessonCount,
         category_id:parseInt(values.category_id)
@@ -58,14 +58,15 @@ export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
       });
   
       const newCourse = {
-        name:values.name,
+        name:values.name, 
         summarize:values.summarize,
-        category:categoryName.name,
+        category:values.category,
         chapters:values.chapters,
         totalLessons:lessonCount,
         category_id:parseInt(values.category_id)
       }
-  
+      
+      console.log(newCourse);
       onSave(newCourse)
     }
 
@@ -73,6 +74,7 @@ export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
       name:'',
       category_id:'',
       summarize:'',
+      category:'',
       chapters:[{
         name:'',
         summarize:'',
@@ -86,7 +88,17 @@ export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
     })
     actions.resetForm()
   }
-  
+
+  // const selectOption = [
+  //   {id:1,value:'blue',label:'Blue'},
+  //   {id:1,value:'red',label:'Red'},
+  //   {id:1,value:'yelloe',label:'Yellow'}
+  // ]
+
+  const handleSelect = (selectOption) => {
+    console.log(selectOption);
+  }
+  console.log(categories);
   return (
 
     <div>
@@ -104,7 +116,17 @@ export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
           <Form>
 
             <FormikInput label='Course' placeholder='Course' name='name' />
-            <FormikSelect label='Select Category' name='category_id' options={categories} />
+
+            <Select options={categories}
+            defaultInputValue={categories[0]}
+            onChange={(selectOption) => {
+              const selectCategory = categories.find(cate => cate.value === selectOption.value)
+              values.category_id = selectCategory.id
+              values.category = selectCategory.value
+            }}/>
+            <br></br>
+            <Select options={categories} isMulti/>
+
             <FormikInput label='Summarize' placeholder='Summarize' name='summarize' />
 
             <FieldArray name='chapters'>

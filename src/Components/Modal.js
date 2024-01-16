@@ -20,10 +20,10 @@ export const CategoryModal = ({data,onChangePopUp,onUpdate}) => {
 
   const onClickUpdate = (values) => {
 
-    data.name = values.category
-    data.code = values.code
+    data.value = values.value
+    data.label = values.label
 
-    onUpdate(data.id,values.category)
+    onUpdate(data.id,values.value)
     onChangePopUp(false)
   }
 
@@ -36,17 +36,17 @@ export const CategoryModal = ({data,onChangePopUp,onUpdate}) => {
             <h1 className="text-white font-bold text-[30px]">Category Modify</h1>
 
             <Formik
-              initialValues={{ category: data.name, code: data.code }}
+              initialValues={{ value: data.value, label: data.label }}
               onSubmit={onClickUpdate}
             >
 
               <Form>
 
-                <FormikInput label='cateogyr' name='category'/>
+                <FormikInput label='value' name='value'/>
 
-                <FormikInput label='Code' name='code'/>
+                <FormikInput label='label' name='label'/>
 
-                <button className='bg-white font-bold p-4'>Click</button>
+                <button type='submit' className='bg-white font-bold p-4'>Click</button>
               </Form>
 
             </Formik>

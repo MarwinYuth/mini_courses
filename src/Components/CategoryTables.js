@@ -15,14 +15,13 @@ export default function CategoryTables({data,onSave,onDelete,onEdit}) {
     <div className="relative overflow-x-auto">  
         
         <Formik
-            initialValues={{name:'',code:''}}
+            initialValues={{value:'',label:''}}
             onSubmit={onSubmit}
-            validationSchema={categorySchema}
         >
 
             <Form>
-                <FormikInput label='Category' placeholder='category' name='name'/>
-                <FormikInput label='Code' placeholder='code' name='code'/>
+                <FormikInput label='label' placeholder='label' name='label'/>
+                <FormikInput label='value' placeholder='value' name='value'/>
 
                 <button type='submit' className='bg-white p-4 font-bold rounded-lg'>Save</button>
             </Form>
@@ -36,10 +35,10 @@ export default function CategoryTables({data,onSave,onDelete,onEdit}) {
                         Id
                     </th>
                     <th scope="col" className="px-6 py-3">
-                        Name
+                        Label
                     </th>
                     <th scope="col" className="px-6 py-3">
-                        Code
+                        Value
                     </th>
                     <th scope="col" className="px-6 py-3">
                         Action
@@ -49,18 +48,18 @@ export default function CategoryTables({data,onSave,onDelete,onEdit}) {
             <tbody>
 
                 {
-                    data.map(cate => {
+                    data.map((cate,index) => {
                         return(
 
-                            <tr key={cate.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {cate.id}
                                 </th>
                                 <td className="px-6 py-4">
-                                    {cate.name}
+                                    {cate.label}
                                 </td>
                                 <td className="px-6 py-4">
-                                    {cate.code}
+                                    {cate.value}
                                 </td>
                                 <td className="px-6 py-4">
                                     <span onClick={() => onEdit(cate.id)} className='text-blue-500 font-bold'>Edit</span> / <span onClick={() => onDelete(cate.id)} className='text-red-500 font-bold'>Delete</span>

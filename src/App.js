@@ -27,6 +27,7 @@ function App() {
 
       return [...prev]
     })
+
   }
 
   const onSaveCourse = (param) => {   
@@ -39,7 +40,7 @@ function App() {
 
       return [...prev]
     })
-    console.log(courses);
+
   }
 
   const onDeleteCategory = (cateogoryId) => {
@@ -67,11 +68,11 @@ function App() {
     setIsEdit(!isEdit)
   }
 
-  const onUpdateCategory = (category_id,name) => {
+  const onUpdateCategory = (category_id,value) => {
     const course = courses.filter(cate => cate.category_id === category_id)
 
     course.forEach(item => {
-      item.category = name
+      item.category = value
     });
     
   }
