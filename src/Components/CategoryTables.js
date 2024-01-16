@@ -61,7 +61,7 @@ export default function CategoryTables({data,onSave,onDelete,onEdit}) {
                                     {cate.value}
                                 </td>
                                 <td className="px-6 py-4">
-                                    <span onClick={() => onEdit(cate.id)} className='text-blue-500 font-bold'>Edit</span> / <span onClick={() => onDelete(cate.id)} className='text-red-500 font-bold'>Delete</span>
+                                    <span onClick={() => onEdit(cate.id)} className='text-blue-500 font-bold cursor-pointer'>Edit</span> / <span onClick={() => onDelete(cate.id)} className='text-red-500 font-bold cursor-pointer'>Delete</span>
                                 </td>
                             </tr>
                         )

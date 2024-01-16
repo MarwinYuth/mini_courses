@@ -63,9 +63,8 @@ function App() {
 
   const onEditCourse = (courseId) => {
     const course = courses.find(course => course.id === courseId);
-    console.log('asdf');
     setIsCourseEdit(course)
-    setIsEdit(!isEdit)
+    setIsEdit(true)
   }
 
   const onUpdateCategory = (category_id,value) => {
@@ -90,8 +89,6 @@ function App() {
     })
     setIsEdit(false)
   }
-
-  console.log(courses);
 
   return (
 

@@ -30,7 +30,7 @@ export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
 
     if(isEdit){
       setInitiaValues(data)
-      setSelectTags(data.tags)
+      setSelectTags(data.tags);
     }
 
   },[isEdit,data])
@@ -71,7 +71,7 @@ export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
         totalLessons:lessonCount,
         category_id:parseInt(values.category_id)
       }
- 
+      
       onSave(newCourse)
     }
 
@@ -115,7 +115,7 @@ export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
             <FormikInput label='Course' placeholder='Course' name='name' />
 
             <Select options={categories}
-            defaultInputValue={categories[0]}
+            value={categories.find(cate => cate.value === values.category)}
             onChange={(selectOption) => {
                 const selectCategory = categories.find(cate => cate.value === selectOption.value)
                 values.category_id = selectCategory.id
