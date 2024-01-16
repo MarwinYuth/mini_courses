@@ -55,7 +55,7 @@ export default function CourseTable({data,onDelete,onEdit}) {
                                         {course.category}
                                     </td>
                                     <td className="px-6 py-4">
-                                        {course.totalChapter.length}
+                                        {course.chapters.length}
                                     </td>
                                     <td className="px-6 py-4">
                                         {course.totalLessons}

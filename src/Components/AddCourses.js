@@ -9,7 +9,7 @@ export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
     name:'',
     category_id:'',
     summarize:'',
-    totalChapter:[{
+    chapters:[{
       name:'',
       summarize:'',
       lessons:[
@@ -37,7 +37,7 @@ export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
 
     if(isEdit){
 
-      values.totalChapter.forEach(items => {
+      values.chapters.forEach(items => {
         lessonCount += items.lessons.length  
       });
 
@@ -45,7 +45,7 @@ export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
         name:values.name,
         summarize:values.summarize,
         category:categoryName.name,
-        totalChapter:values.totalChapter,
+        chapters:values.chapters,
         totalLessons:lessonCount,
         category_id:parseInt(values.category_id)
       }
@@ -53,7 +53,7 @@ export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
       onUpdate(data.id,newCourse)
     }else{
 
-      values.totalChapter.forEach(items => {
+      values.chapters.forEach(items => {
         lessonCount += items.lessons.length  
       });
   
@@ -61,7 +61,7 @@ export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
         name:values.name,
         summarize:values.summarize,
         category:categoryName.name,
-        totalChapter:values.totalChapter,
+        chapters:values.chapters,
         totalLessons:lessonCount,
         category_id:parseInt(values.category_id)
       }
@@ -73,7 +73,7 @@ export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
       name:'',
       category_id:'',
       summarize:'',
-      totalChapter:[{
+      chapters:[{
         name:'',
         summarize:'',
         lessons:[
@@ -107,7 +107,7 @@ export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
             <FormikSelect label='Select Category' name='category_id' options={categories} />
             <FormikInput label='Summarize' placeholder='Summarize' name='summarize' />
 
-            <FieldArray name='totalChapter'>
+            <FieldArray name='chapters'>
               {({push,remove}) => (
                 <div>
 
@@ -125,16 +125,16 @@ export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
                         Add Chapter
                       </button>
 
-                  {values.totalChapter.map((chapter,index) => (
+                  {values.chapters.map((chapter,index) => (
 
                     <div key={index} className='border border-white p-5 mt-4'>
 
                       <span onClick={() => remove(index)} className='text-white float-end font-bold'>X</span>
-                      <FormikInput label='Chapter' placeholder='Chapter' name={`totalChapter.${index}.name`}/>
-                      <FormikInput label='Summaarize' placeholder='Summarize' name={`totalChapter.${index}.summarize`}/>
+                      <FormikInput label='Chapter' placeholder='Chapter' name={`chapters.${index}.name`}/>
+                      <FormikInput label='Summaarize' placeholder='Summarize' name={`chapters.${index}.summarize`}/>
 
 
-                      <FieldArray name={`totalChapter.${index}.lessons`}>
+                      <FieldArray name={`chapters.${index}.lessons`}>
 
                         {({push:pushLesson,remove:removeLesson}) => (
                           
@@ -153,8 +153,8 @@ export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
                             {chapter.lessons.map((lesson,lessonIndex) => (
                               <div key={lessonIndex}>
                                 <span onClick={() => removeLesson(lessonIndex)} className='text-white float-end font-bold'>X</span>
-                                <FormikInput label='Lessons' name={`totalChapter.${index}.lessons.${lessonIndex}.name`}/>
-                                <FormikInput label='Content' name={`totalChapter.${index}.lessons.${lessonIndex}.content`}/>
+                                <FormikInput label='Lessons' name={`chapters.${index}.lessons.${lessonIndex}.name`}/>
+                                <FormikInput label='Content' name={`chapters.${index}.lessons.${lessonIndex}.content`}/>
                               </div>
                             ))}
                           </div>
