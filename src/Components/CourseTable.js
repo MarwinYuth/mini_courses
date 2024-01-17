@@ -1,7 +1,9 @@
 import React from 'react'
 // import AddCourses from './AddCourses'
 
-export default function CourseTable({data,onDelete,onEdit}) {
+export default function CourseTable({data,onDelete,onEdit}) {   
+
+    const sortedData = [...data].sort((a, b) => a.id - b.id);  
 
   return (
 
@@ -40,7 +42,7 @@ export default function CourseTable({data,onDelete,onEdit}) {
                 <tbody>
 
                    {
-                        data.map((course,courseIndex) => {
+                        sortedData.map((course,courseIndex) => {
 
                             return(
 

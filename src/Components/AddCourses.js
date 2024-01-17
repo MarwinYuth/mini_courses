@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import { FormikInput} from './Input'
-import { Formik,Form, FieldArray } from 'formik'
+import { Formik,Form, FieldArray,ErrorMessage } from 'formik'
 import Select from 'react-select'
 import CreatableSelect from 'react-select/creatable';
+import { CourseSchema } from '../Schemas'
+
 
 export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
 
@@ -17,10 +19,12 @@ export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
     chapters:[{
       name:'',
       summarize:'',
+      image:null,
       lessons:[
         {  
           name:'',
-          content:''
+          content:'',
+          image:null
         }
       ]
     }]
@@ -78,16 +82,18 @@ export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
     setInitiaValues({
       name:'',
       category_id:'',
+      category:'',
       summarize:'',
       tags:[],
-      category:'',
       chapters:[{
         name:'',
         summarize:'',
+        image:null,
         lessons:[
-          {
+          {  
             name:'',
-            content:''
+            content:'',
+            image:null
           }
         ]
       }]
@@ -108,9 +114,10 @@ export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
          initialValues={initiaValues}
          enableReinitialize={true}
          onSubmit={onSaveCourse}
+       
          >
-         {({values}) => (
-          <Form>
+         {({ values, setFieldValue, handleSubmit}) => (
+          <Form onSubmit={handleSubmit}>
 
             <FormikInput label='Course' placeholder='Course' name='name' />
 
@@ -145,7 +152,8 @@ export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
                           push({
                             name:'',
                             summarize:'',
-                            lessons:[{name:'',content:''}]
+                            image:null,
+                            lessons:[{name:'',content:'',image:null}]
                           })
                         }}
                         type='button'
@@ -155,13 +163,22 @@ export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
                       </button>
 
                   {values.chapters.map((chapter,index) => (
-
+                    
                     <div key={index} className='border border-white p-5 mt-4'>
 
-                      <span onClick={() => remove(index)} className='text-white float-end font-bold'>X</span>
-                      <FormikInput label='Chapter' placeholder='Chapter' name={`chapters.${index}.name`}/>
-                      <FormikInput label='Summaarize' placeholder='Summarize' name={`chapters.${index}.summarize`}/>
-
+                      <span onClick={() => remove(index)} className="text-white float-end font-bold">
+                        X
+                      </span>
+                      <FormikInput label="Chapter" placeholder="Chapter" name={`chapters.${index}.name`} />
+                      <FormikInput label="Summarize" placeholder="Summarize" name={`chapters.${index}.summarize`}/>
+                      {chapter.image && <img className='text-white w-[200px]' src={require('../../src/images/' + chapter.image)} alt='empty file'/>}
+                      <FormikInput label='Image' type='file' name={`chapters${index}.image`}
+                      onChange={(e) => {
+                        const file = e.target.files[0]
+                        setFieldValue(`chapters.${index}.image`,file.name)
+                      }}
+                      />
+                      <ErrorMessage name={`chapters.${index}.image`} component='div' className='text-red-500'/>
 
                       <FieldArray name={`chapters.${index}.lessons`}>
 
@@ -171,7 +188,7 @@ export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
 
                                 <button
                                 onClick={() => {
-                                  pushLesson({name:'',content:''})
+                                  pushLesson({name:'',content:'',image:null})
                                 }}
                                 type='button'
                                 className='bg-white p-2 font-bold rounded-lg'
@@ -184,6 +201,13 @@ export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
                                 <span onClick={() => removeLesson(lessonIndex)} className='text-white float-end font-bold'>X</span>
                                 <FormikInput label='Lessons' name={`chapters.${index}.lessons.${lessonIndex}.name`}/>
                                 <FormikInput label='Content' name={`chapters.${index}.lessons.${lessonIndex}.content`}/>
+                                {lesson.image && <img className='text-white w-[200px]' src={require('../../src/images/' + lesson.image)} alt='empty file'/>}
+                                <FormikInput label='Image' type='file' name={`chapters${index}.image`}
+                                onChange={(e) => {
+                                  const file = e.target.files[0]
+                                  setFieldValue(`chapters.${index}.lessons.${lessonIndex}.image`,file.name)
+                                }}
+                                />
                               </div>
                             ))}
                           </div>

@@ -1,6 +1,7 @@
 import React from 'react'
 import { FormikInput } from './Input'
 import { Form, Formik } from 'formik'
+import { categorySchema } from '../Schemas'
 
 export default function CategoryTables({data,onSave,onDelete,onEdit}) {
 
@@ -16,6 +17,7 @@ export default function CategoryTables({data,onSave,onDelete,onEdit}) {
         <Formik
             initialValues={{value:'',label:''}}
             onSubmit={onSubmit}
+            validationSchema={categorySchema}
         >
 
             <Form>
