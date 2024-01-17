@@ -61,7 +61,7 @@ export const TextArea = ({label,placeholder,name,value,onChange}) => {
 
 export const FormikTextArea = ({label,...props}) => {
 
-    const [field,meta] = useField(props)
+    const [field] = useField(props)
 
     return(
 

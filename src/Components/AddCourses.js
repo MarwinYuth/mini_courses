@@ -115,6 +115,7 @@ export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
             <FormikInput label='Course' placeholder='Course' name='name' />
 
             <Select options={categories}
+            defaultInputValue='Please Select Category'
             value={categories.find(cate => cate.value === values.category)}
             onChange={(selectOption) => {
                 const selectCategory = categories.find(cate => cate.value === selectOption.value)
@@ -125,6 +126,7 @@ export default function AddCourses({data,categories,onSave,isEdit,onUpdate}) {
             <br></br>
 
             <CreatableSelect 
+            defaultInputValue='Please Select Tags'
             isMulti
             value={selectTags}
             onChange={(selectOption) => {
